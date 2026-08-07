@@ -7,7 +7,7 @@ cask "plonk" do
   desc "Mac window manager an AI agent can drive over MCP"
   homepage "https://github.com/ostapondo/plonk"
 
-  depends_on macos: ">= :ventura"
+  depends_on macos: :ventura
 
   app "Plonk.app"
 
