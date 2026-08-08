@@ -1,6 +1,6 @@
 cask "plonk" do
-  version "0.0.4"
-  sha256 "dc4da4540b3de2e45de70b7180e5c3a2d4eb141fc90969ee5f75d1d8eda177d0"
+  version "0.0.5"
+  sha256 "763e020b1c531d9d6636cb0a909bb2fe6da8887269d776eac68043dcdb032685"
 
   url "https://github.com/ostapondo/plonk/releases/download/v#{version}/Plonk-#{version}.zip"
   name "Plonk"
@@ -24,6 +24,18 @@ cask "plonk" do
       Grant Accessibility when asked, then relaunch — macOS only picks the
       grant up on a fresh start. Screen Recording is asked for separately, the
       first time you take a screenshot.
+
+      0.0.5 is signed with a different certificate than 0.0.4, so macOS treats
+      it as a new app and asks for both permissions again. This is the only
+      release that does.
+
+      Builds from 0.0.5 on are made on GitHub's runners and carry a provenance
+      attestation, so you can check where this one came from before trusting
+      it with any of that:
+
+        gh attestation verify \\
+          $(brew --cache)/downloads/*--Plonk-#{version}.zip \\
+          -R ostapondo/plonk
     EOS
   end
 end
