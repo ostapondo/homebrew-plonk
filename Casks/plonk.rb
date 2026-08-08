@@ -4,8 +4,8 @@ cask "plonk" do
 
   url "https://github.com/ostapondo/plonk/releases/download/v#{version}/Plonk-#{version}.zip"
   name "Plonk"
-  desc "Window manager with snap zones and workspaces that reopen your apps"
-  homepage "https://github.com/ostapondo/plonk"
+  desc "Menu bar utilities: window zones, workspaces, OCR, keep-awake, screenshots"
+  homepage "https://ostapondo.github.io/Plonk/"
 
   depends_on macos: :ventura
 
