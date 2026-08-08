@@ -1,6 +1,6 @@
 cask "plonk" do
-  version "0.0.5"
-  sha256 "763e020b1c531d9d6636cb0a909bb2fe6da8887269d776eac68043dcdb032685"
+  version "0.1.0"
+  sha256 "4172c2237228f38b788e97a6bc9a08e2b06a9f02804dd98c1806b6a51123398c"
 
   url "https://github.com/ostapondo/plonk/releases/download/v#{version}/Plonk-#{version}.zip"
   name "Plonk"
@@ -11,31 +11,39 @@ cask "plonk" do
 
   app "Plonk.app"
 
-  zap trash: [
-    "~/Library/Application Support/Plonk",
-  ]
+  # Plonk is signed, but with a self-signed certificate rather than a Developer
+  # ID, so Gatekeeper holds it on first launch and sends the user to System
+  # Settings to say Open Anyway. Clearing the quarantine flag skips that.
+  #
+  # This is a check being skipped on someone's behalf, so it is worth being
+  # straight about the trade: what Gatekeeper offers here is Apple's opinion of
+  # a build it has never seen, and what replaces it is the attestation in the
+  # caveats below, which ties this exact archive to the commit and the workflow
+  # run that produced it. That is a stronger claim, but only if it gets run.
+  postflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-dr", "com.apple.quarantine", "#{appdir}/Plonk.app"]
+  end
+
+  zap trash: "~/Library/Application Support/Plonk"
 
   caveats do
     <<~EOS
-      First launch takes one extra click. Plonk is code-signed but not
-      notarized, so macOS holds it once: open Plonk, dismiss the warning, then
-      System Settings > Privacy & Security > Open Anyway.
-
       Grant Accessibility when asked, then relaunch — macOS only picks the
       grant up on a fresh start. Screen Recording is asked for separately, the
       first time you take a screenshot.
 
-      0.0.5 is signed with a different certificate than 0.0.4, so macOS treats
-      it as a new app and asks for both permissions again. This is the only
-      release that does.
-
-      Builds from 0.0.5 on are made on GitHub's runners and carry a provenance
-      attestation, so you can check where this one came from before trusting
-      it with any of that:
+      That is a lot to hand an app macOS cannot vouch for, and it cannot:
+      Plonk is signed, but not notarized. So check where this build came from
+      before granting either — it was made on GitHub's runners and carries a
+      provenance attestation naming the commit it was built from:
 
         gh attestation verify \\
           $(brew --cache)/downloads/*--Plonk-#{version}.zip \\
           -R ostapondo/plonk
+
+      This install skipped the Gatekeeper prompt by clearing the quarantine
+      flag. The command above is the check worth doing instead.
     EOS
   end
 end
