@@ -1,6 +1,6 @@
 cask "plonk" do
-  version "0.4.1"
-  sha256 "dfecd81a0e4e791843fbc0ff2630c0b8beefba639d267f82e088a9cc12f31c7f"
+  version "0.4.2"
+  sha256 "7afccd9dc55c676066a5dcfce872ff1516bb2ed7df3fd2c67f4865f557dad5df"
 
   url "https://github.com/ostapondo/plonk/releases/download/v#{version}/Plonk-#{version}.zip"
   name "Plonk"
